@@ -23,7 +23,6 @@ class AdminDanhMuc
         }
     }
 
-
     public function insertDanhMuc($ten_danh_muc, $mo_ta)
     {
         try {

@@ -3,10 +3,10 @@
 // Biến môi trường, dùng chung toàn hệ thống
 // Khai báo dưới dạng HẰNG SỐ để không phải dùng $GLOBALS
 
-define('BASE_URL', 'http://localhost/quan_ly_du_an/quan_ly_du_an/');
+define('BASE_URL', 'http://localhost/quan_ly_du_an/');
 
 // Đường dẫn vào phần admin
-define('BASE_URL_ADMIN', 'http://localhost/quan_ly_du_an/quan_ly_du_an/admin/');
+define('BASE_URL_ADMIN', 'http://localhost/quan_ly_du_an/admin/');
 // Đường dẫn đến client
 
 define('DB_HOST', 'localhost');
