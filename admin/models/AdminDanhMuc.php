@@ -22,6 +22,8 @@ class AdminDanhMuc
             echo 'Lỗi' . $e->getMessage();
         }
     }
+
+
     public function insertDanhMuc($ten_danh_muc, $mo_ta)
     {
         try {
