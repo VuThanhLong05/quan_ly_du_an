@@ -16,7 +16,6 @@ class AdminDanhMucController
         require_once './views/danhmuc/listDanhMuc.php';
     }
 
-
     public function formAddDanhMuc()
     {
         require_once './views/danhmuc/addDanhMuc.php';
