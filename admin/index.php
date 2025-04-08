@@ -23,6 +23,8 @@ match ($act) {
     //danh mục
 
     'danh-muc' => (new AdminDanhMucController())->danhSachDanhMuc(),
+    'form-them-danh-muc' => (new AdminDanhMucController())->formAddDanhMuc(),
+    'them-danh-muc' => (new AdminDanhMucController())->postAddDanhMuc(),
 
     // rou sản phẩm
 
@@ -34,6 +36,4 @@ match ($act) {
     'them-san-pham' => (new AdminSanPhamController())->postAddSanPham(),
     'form-them-san-pham' => (new AdminSanPhamController())->formAddSanPham(),
     'chi-tiet-san-pham' => (new AdminSanPhamController())->getDetailSanPham(),
-
-
 };
