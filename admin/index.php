@@ -25,6 +25,9 @@ match ($act) {
     'danh-muc' => (new AdminDanhMucController())->danhSachDanhMuc(),
     'form-them-danh-muc' => (new AdminDanhMucController())->formAddDanhMuc(),
     'them-danh-muc' => (new AdminDanhMucController())->postAddDanhMuc(),
+    'xoa-danh-muc' => (new AdminDanhMucController())->deleteDanhMuc(),
+    'sua-danh-muc' => (new AdminDanhMucController())->postEditAddDanhMuc(),
+    'form-sua-danh-muc' => (new AdminDanhMucController())->formEditAddDanhMuc(),
 
     // rou sản phẩm
 
