@@ -32,6 +32,8 @@ class AdminDanhMucController
             // Lấy ra dữ liệu
             $ten_danh_muc = $_POST['ten_danh_muc'];
             $mo_ta = $_POST['mo_ta'];
+            $trang_thai = 1;
+
 
             // Tạo 1 mảng trống để chứa dữ liệu
             $errors = [];
@@ -42,8 +44,10 @@ class AdminDanhMucController
             // Nếu không có lỗi tiến hành thêm danh mục
             if (empty($errors)) {
                 // Nếu không có lỗi thì tiến hành thêm danh mục
-                // var_dump('ok');
-                $this->modelDanhMuc->insertDanhMuc($ten_danh_muc, $mo_ta);
+                // var_dump('ok'); die();
+                $this->modelDanhMuc->insertDanhMuc($ten_danh_muc, $mo_ta, $trang_thai);  
+                // var_dump($this); die();
+
                 header('location: ' . BASE_URL_ADMIN . '?act=danh-muc');
                 exit();
             } else {
