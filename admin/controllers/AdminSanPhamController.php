@@ -165,19 +165,15 @@ class AdminSanPhamController
     // Sửa sản phẩm
     public function postEditAddSanPham()
     {
-
         // Kiểm tra xem dữ liệu có submit lên không
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // var_dump('abc'); die();
+
             // Lấy ra dữ liệu cũ ở sản phẩm
             $san_pham_id = $_POST['san_pham_id'] ?? '';
-            // Truy vấn
             $sanPhamOld = $this->modelSanPham->getDetailSanPham($san_pham_id);
             $old_file = $sanPhamOld['hinh_anh'];
 
-            // code
-            // Lấy ra dữ liệu
-            // var_dump($_FILES); die();
+            // Lấy ra dữ liệu mới từ form
             $ten_san_pham = $_POST['ten_san_pham'] ?? '';
             $gia_san_pham = $_POST['gia_san_pham'] ?? '';
             $gia_khuyen_mai = $_POST['gia_khuyen_mai'] ?? '';
@@ -186,46 +182,55 @@ class AdminSanPhamController
             $danh_muc_id = $_POST['danh_muc_id'] ?? '';
             $trang_thai = $_POST['trang_thai'] ?? '';
             $mo_ta = $_POST['mo_ta'] ?? '';
+            $hinh_anh = $_FILES['hinh_anh'] ?? null;
 
-            $hinh_anh = $_FILES['hinh_anh']  ?? null;
-
-            // Tạo 1 mảng trống để chứa dữ liệu
+            // Mảng chứa lỗi
             $errors = [];
+
+            // Validate tên sản phẩm
             if (empty($ten_san_pham)) {
                 $errors['ten_san_pham'] = 'Tên sản phẩm không được để trống';
             }
 
+            // Validate giá sản phẩm
             if (empty($gia_san_pham)) {
                 $errors['gia_san_pham'] = 'Giá sản phẩm không được để trống';
+            } elseif (!is_numeric($gia_san_pham) || $gia_san_pham < 0) {
+                $errors['gia_san_pham'] = 'Giá sản phẩm phải là số không âm';
             }
 
-            // if (empty($gia_khuyen_mai)) {
-            //     $errors['gia_khuyen_mai'] = 'Giá khuyến không được để trống';
-            // }
+            // Validate giá khuyến mãi (nếu có)
+            if (!empty($gia_khuyen_mai) && (!is_numeric($gia_khuyen_mai) || $gia_khuyen_mai < 0)) {
+                $errors['gia_khuyen_mai'] = 'Giá khuyến mãi phải là số không âm';
+            }
 
+            // Validate số lượng
             if (empty($so_luong)) {
-
-                $errors['so_luong'] = 'Số lượng được để trống';
+                $errors['so_luong'] = 'Số lượng không được để trống';
+            } elseif (!is_numeric($so_luong) || $so_luong < 0) {
+                $errors['so_luong'] = 'Số lượng phải là số không âm';
             }
 
+            // Validate ngày nhập
             if (empty($ngay_nhap)) {
                 $errors['ngay_nhap'] = 'Ngày nhập không được để trống';
             }
 
+            // Validate danh mục
             if (empty($danh_muc_id)) {
                 $errors['danh_muc_id'] = 'Phải chọn danh mục sản phẩm';
             }
 
+            // Validate trạng thái
             if (empty($trang_thai)) {
                 $errors['trang_thai'] = 'Phải chọn trạng thái sản phẩm';
             }
 
-
+            // Lưu lỗi vào session để hiển thị lại
             $_SESSION['error'] = $errors;
-            // var_dump($errors);die();
-            // logic sửa ảnh
+
+            // Xử lý ảnh
             if (isset($hinh_anh) && $hinh_anh['error'] == UPLOAD_ERR_OK) {
-                // upload ảnh mới lên
                 $new_file = uploadFile($hinh_anh, './uploads/');
                 if (!empty($old_file)) {
                     deleteFile($old_file);
@@ -234,12 +239,8 @@ class AdminSanPhamController
                 $new_file = $old_file;
             }
 
-            // Nếu không có lỗi tiến hành thêm sản phẩm
+            // Nếu không có lỗi, cập nhật sản phẩm
             if (empty($errors)) {
-
-                // Nếu không có lỗi thì tiến hành thêm sản phẩm
-                // var_dump('ok'); die();
-
                 $this->modelSanPham->updateSanPham(
                     $san_pham_id,
                     $ten_san_pham,
@@ -253,16 +254,10 @@ class AdminSanPhamController
                     $new_file
                 );
 
-                // var_dump($status);
-                // die();
-
                 header('location: ' . BASE_URL_ADMIN . '?act=san-pham');
                 exit();
             } else {
-                // Trả về form và lỗi
-                // Đặt chỉ thị xóa se
                 $_SESSION['flash'] = true;
-
                 header('location: ' . BASE_URL_ADMIN . '?act=form-sua-san-pham&id_san_pham=' . $san_pham_id);
                 exit();
             }
