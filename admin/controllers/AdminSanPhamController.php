@@ -57,34 +57,44 @@ class AdminSanPhamController
 
             // Tạo 1 mảng trống để chứa dữ liệu
             $errors = [];
+            
+            // Validate tên sản phẩm
             if (empty($ten_san_pham)) {
                 $errors['ten_san_pham'] = 'Tên sản phẩm không được để trống';
             }
 
+            // Validate giá sản phẩm
             if (empty($gia_san_pham)) {
                 $errors['gia_san_pham'] = 'Giá sản phẩm không được để trống';
+            } elseif (!is_numeric($gia_san_pham) || $gia_san_pham < 0) {
+                $errors['gia_san_pham'] = 'Giá sản phẩm phải là số không âm';
             }
-            // if (empty($gia_khuyen_mai)) {
-            //     $errors['gia_khuyen_mai'] = 'Giá khuyến không được để trống';
-            // }
-            if (empty($so_luong)) {
 
-                $errors['so_luong'] = 'Số lượng được để trống';
+            // Validate giá khuyến mãi (nếu có)
+            if (!empty($gia_khuyen_mai) && (!is_numeric($gia_khuyen_mai) || $gia_khuyen_mai < 0)) {
+                $errors['gia_khuyen_mai'] = 'Giá khuyến mãi phải là số không âm';
             }
+
+            // Validate số lượng
+            if (empty($so_luong)) {
+                $errors['so_luong'] = 'Số lượng không được để trống';
+            } elseif (!is_numeric($so_luong) || $so_luong < 0) {
+                $errors['so_luong'] = 'Số lượng phải là số không âm';
+            }
+
+            // Validate ngày nhập
             if (empty($ngay_nhap)) {
                 $errors['ngay_nhap'] = 'Ngày nhập không được để trống';
             }
 
+            // Validate danh mục
             if (empty($danh_muc_id)) {
                 $errors['danh_muc_id'] = 'Phải chọn danh mục sản phẩm';
             }
 
+            // Validate trạng thái
             if (empty($trang_thai)) {
                 $errors['trang_thai'] = 'Phải chọn trạng thái sản phẩm';
-            }
-
-            if ($hinh_anh['error'] !== 0) {
-                $errors['hinh_anh'] = 'Phải chọn ảnh sản phẩm';
             }
 
             $_SESSION['error'] = $errors;
